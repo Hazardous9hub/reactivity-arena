@@ -1,51 +1,12 @@
 /**
  * Dynamic QR Code Generator & Classroom Poster Modal
- * Features a permanent, unique canonical QR code that never changes or expires.
+ * Features a permanent, unique canonical QR code and 100% reliable poster downloads.
  */
 
 import QRCode from "qrcode";
 import { sounds } from "./SoundController.js";
 
 export const CANONICAL_WEBSITE_URL = "https://hazardous9hub.github.io/reactivity-arena/";
-
-function drawRoundRect(ctx, x, y, width, height, radius) {
-  if (typeof ctx.roundRect === "function") {
-    ctx.beginPath();
-    ctx.roundRect(x, y, width, height, radius);
-    return;
-  }
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  ctx.lineTo(x + radius, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-  ctx.closePath();
-}
-
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(" ");
-  let line = "";
-  let currentY = y;
-
-  for (let n = 0; n < words.length; n++) {
-    const testLine = line + words[n] + " ";
-    const metrics = ctx.measureText(testLine);
-    const testWidth = metrics.width;
-    if (testWidth > maxWidth && n > 0) {
-      ctx.fillText(line.trim(), x, currentY);
-      line = words[n] + " ";
-      currentY += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  ctx.fillText(line.trim(), x, currentY);
-}
 
 export class QRModal {
   constructor() {
@@ -63,7 +24,7 @@ export class QRModal {
         <div class="qr-modal-header">
           <div class="qr-title-group">
             <span class="qr-badge">CBSE CLASS 10 &bull; CHAPTER 3</span>
-            <h3 class="qr-title">📱 Permanent QR Code</h3>
+            <h3 class="qr-title">📱 Permanent QR Code &amp; Poster</h3>
           </div>
           <button class="qr-close-btn" id="qr-close-btn" aria-label="Close modal">&times;</button>
         </div>
@@ -86,17 +47,17 @@ export class QRModal {
               ${CANONICAL_WEBSITE_URL}
             </div>
             <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">
-              Fixed canonical destination &bull; Guaranteed to remain constant &amp; active forever.
+              Fixed canonical destination &bull; Guaranteed to remain active &amp; unchanged forever.
             </div>
           </div>
 
           <div class="qr-actions">
-            <button class="btn btn-secondary btn-sm" id="qr-download-btn">
+            <a href="./Reactivity-Arena-Permanent-QRCode.png" download="Reactivity-Arena-Permanent-QRCode.png" class="btn btn-secondary btn-sm" id="qr-download-btn">
               📥 Download QR (PNG)
-            </button>
-            <button class="btn btn-primary btn-sm" id="qr-poster-btn">
+            </a>
+            <a href="./Reactivity-Arena-Classroom-Poster.png" download="Reactivity-Arena-Classroom-Poster.png" class="btn btn-primary btn-sm" id="qr-poster-btn">
               🖼️ Save QR Poster (PNG)
-            </button>
+            </a>
             <button class="btn btn-secondary btn-sm" id="qr-print-btn">
               🖨️ Print Poster (A4)
             </button>
@@ -125,13 +86,15 @@ export class QRModal {
     const downloadBtn = this.modalEl.querySelector("#qr-download-btn");
     downloadBtn.addEventListener("click", () => {
       sounds.playClick();
-      this.downloadQR();
+      this.setStatusMessage("✓ Downloading permanent QR code image...");
+      setTimeout(() => { this.setStatusMessage(""); }, 3000);
     });
 
     const posterBtn = this.modalEl.querySelector("#qr-poster-btn");
     posterBtn.addEventListener("click", () => {
       sounds.playClick();
-      this.saveClassroomPoster();
+      this.setStatusMessage("✓ Downloading high-res classroom poster...");
+      setTimeout(() => { this.setStatusMessage(""); }, 3000);
     });
 
     const printBtn = this.modalEl.querySelector("#qr-print-btn");
@@ -163,190 +126,8 @@ export class QRModal {
     });
   }
 
-  downloadQR() {
-    if (!this.canvasEl) return;
-    try {
-      const link = document.createElement("a");
-      link.download = "Reactivity-Arena-Permanent-QRCode.png";
-      link.href = this.canvasEl.toDataURL("image/png");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      this.setStatusMessage("✓ Permanent QR code downloaded!");
-    } catch (e) {
-      console.error("Download QR error", e);
-      this.setStatusMessage("⚠️ Failed to download QR image.");
-    }
-  }
-
-  saveClassroomPoster() {
-    if (!this.canvasEl) return;
-    this.setStatusMessage("Rendering high-res classroom poster...");
-
-    const width = 1200;
-    const height = 1600;
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-
-    // 1. Dark Gradient Background
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-    bgGrad.addColorStop(0, "#080d1a");
-    bgGrad.addColorStop(0.5, "#0f172a");
-    bgGrad.addColorStop(1, "#070b14");
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, width, height);
-
-    // 2. Neon Cyan Outer & Inner Border
-    ctx.strokeStyle = "#00f2fe";
-    ctx.lineWidth = 6;
-    ctx.strokeRect(30, 30, width - 60, height - 60);
-
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(40, 40, width - 80, height - 80);
-
-    // 3. Top Badge Pill
-    ctx.fillStyle = "rgba(0, 242, 254, 0.15)";
-    drawRoundRect(ctx, 350, 80, 500, 50, 25);
-    ctx.fill();
-    ctx.strokeStyle = "#00f2fe";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    ctx.fillStyle = "#00f2fe";
-    ctx.font = "bold 20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("CBSE CLASS 10 SCIENCE • CHAPTER 3", width / 2, 112);
-
-    // 4. Main Title
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "800 58px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("REACTIVITY ARENA", width / 2, 195);
-
-    // Subtitle
-    ctx.fillStyle = "#f59e0b";
-    ctx.font = "600 28px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("Metals & Non-Metals 3D Arcade & Board Exam Hub", width / 2, 245);
-
-    // 5. White card behind QR code for high camera contrast
-    const qrBoxSize = 480;
-    const qrBoxX = (width - qrBoxSize) / 2;
-    const qrBoxY = 290;
-
-    // Glowing background behind QR card
-    ctx.fillStyle = "rgba(0, 242, 254, 0.2)";
-    drawRoundRect(ctx, qrBoxX - 15, qrBoxY - 15, qrBoxSize + 30, qrBoxSize + 30, 32);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    drawRoundRect(ctx, qrBoxX, qrBoxY, qrBoxSize, qrBoxSize, 24);
-    ctx.fill();
-
-    // Draw QR code with high-contrast
-    const qrPad = 30;
-    ctx.drawImage(this.canvasEl, qrBoxX + qrPad, qrBoxY + qrPad, qrBoxSize - (qrPad * 2), qrBoxSize - (qrPad * 2));
-
-    // 6. Call to Action below QR
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 32px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("📱 Scan with Camera or Google Lens to Play!", width / 2, 830);
-
-    // Permanent URL Text
-    ctx.fillStyle = "#00f2fe";
-    ctx.font = "22px monospace";
-    ctx.fillText(CANONICAL_WEBSITE_URL, width / 2, 875);
-
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("Permanent QR Code • Never Expires • Zero Login Required", width / 2, 915);
-
-    // 7. Divider Line
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(100, 960);
-    ctx.lineTo(width - 100, 960);
-    ctx.stroke();
-
-    // 8. 4 Feature Cards (2x2 Grid)
-    const features = [
-      { icon: "🧗", title: "Crossclimb Puzzles", desc: "Climb the Reactivity Series with step-by-step reaction clues." },
-      { icon: "🎯", title: "Pinpoint Challenge", desc: "Deduce mystery elements from 5 progressive chemical clues." },
-      { icon: "⚛️", title: "3D WebGL Labs", desc: "Interactive simulations of ionic lattices and copper refining." },
-      { icon: "📋", title: "CBSE Board Secrets", desc: "Top exam traps, balanced reactions, and official marking tips." }
-    ];
-
-    const cardW = 460;
-    const cardH = 140;
-    const col1X = 110;
-    const col2X = 630;
-    const row1Y = 1000;
-    const row2Y = 1170;
-
-    features.forEach((feat, i) => {
-      const x = i % 2 === 0 ? col1X : col2X;
-      const y = i < 2 ? row1Y : row2Y;
-
-      ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
-      drawRoundRect(ctx, x, y, cardW, cardH, 16);
-      ctx.fill();
-      ctx.strokeStyle = "rgba(0, 242, 254, 0.3)";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      ctx.textAlign = "left";
-      ctx.fillStyle = "#00f2fe";
-      ctx.font = "bold 24px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-      ctx.fillText(`${feat.icon} ${feat.title}`, x + 24, y + 45);
-
-      ctx.fillStyle = "#cbd5e1";
-      ctx.font = "18px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-      wrapText(ctx, feat.desc, x + 24, y + 80, cardW - 48, 26);
-    });
-
-    // 9. Dedication Card at Bottom
-    const dedY = 1350;
-    ctx.fillStyle = "rgba(236, 72, 153, 0.12)";
-    drawRoundRect(ctx, 110, dedY, width - 220, 160, 20);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(236, 72, 153, 0.4)";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#f472b6";
-    ctx.font = "bold 20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("💖 DEDICATED WITH LOVE TO POOJA & HER STUDENTS", width / 2, dedY + 45);
-
-    ctx.fillStyle = "#f8fafc";
-    ctx.font = "italic 20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText('"Turning Class 10 Science & Reactions into an Adventure of Confidence!"', width / 2, dedY + 85);
-
-    ctx.fillStyle = "#f59e0b";
-    ctx.font = "bold 18px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("🌟 Reactivity Arena • Class 10 Science Interactive Learning Suite 🌟", width / 2, dedY + 125);
-
-    // Direct download as high-res PNG
-    try {
-      const a = document.createElement("a");
-      a.download = "Reactivity-Arena-Classroom-Poster.png";
-      a.href = canvas.toDataURL("image/png");
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      this.setStatusMessage("✓ Classroom poster image downloaded!");
-    } catch (e) {
-      console.error("Poster download error", e);
-      this.setStatusMessage("⚠️ Failed to download poster image.");
-    }
-  }
-
   printClassroomPoster() {
-    if (!this.canvasEl) return;
     this.setStatusMessage("Opening print dialog...");
-    const qrDataUrl = this.canvasEl.toDataURL("image/png");
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -377,7 +158,7 @@ export class QRModal {
         <h2>Metals &amp; Non-Metals 3D Arcade &amp; Board Exam Puzzles</h2>
 
         <div class="qr-box">
-          <img src="${qrDataUrl}" class="qr-img" alt="QR Code" />
+          <img src="./Reactivity-Arena-Permanent-QRCode.png" class="qr-img" alt="QR Code" />
         </div>
 
         <div class="callout">👉 Scan with your Phone Camera or Google Lens to Play!</div>
