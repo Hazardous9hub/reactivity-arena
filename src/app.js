@@ -9,6 +9,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { Header } from "./components/Header.js";
 import { QRModal } from "./components/QRModal.js";
+import { Loader } from "./components/Loader.js";
+import { TrapsCarousel } from "./components/TrapsCarousel.js";
+import { PrivacyModal } from "./components/PrivacyModal.js";
+import { BreakdownModal } from "./components/BreakdownModal.js";
 import { sounds } from "./components/SoundController.js";
 import { boardTraps } from "./data/boardTraps.js";
 import { chemicalReactions } from "./data/chemicalReactions.js";
@@ -31,6 +35,10 @@ class App {
     this.lenis = null;
     this.sceneManager = null;
     this.qrModal = null;
+    this.loader = null;
+    this.privacyModal = null;
+    this.breakdownModal = null;
+    this.trapsCarousel = null;
     this.activeGameTab = "pinpoint";
     this.activeGameInstance = null;
 
@@ -38,10 +46,16 @@ class App {
   }
 
   init() {
+    // 0. Preloader Screen
+    this.loader = new Loader();
+    this.loader.start();
+
     // 1. Lenis Smooth Scroll
     this.initSmoothScroll();
 
     // 2. Modals & Header
+    this.privacyModal = new PrivacyModal();
+    this.breakdownModal = new BreakdownModal();
     this.qrModal = new QRModal();
     new Header("header-mount", this.qrModal);
 
@@ -51,12 +65,29 @@ class App {
     // 4. Game Hub Tabs
     this.initGameHub();
 
-    // 5. Board Exam Traps & Reactions Explorer
-    this.renderBoardTraps();
+    // 5. Board Exam Traps Carousel & Reactions Bank Explorer
+    this.trapsCarousel = new TrapsCarousel("board-traps-carousel-mount");
     this.renderReactionsBank();
 
-    // 6. GSAP Scroll Animations
+    // 6. Privacy & Policy Link Handlers
+    this.initPrivacyTriggers();
+
+    // 7. GSAP Scroll Animations
     this.initScrollAnimations();
+  }
+
+  initPrivacyTriggers() {
+    const openPrivacy = (e) => {
+      if (e) e.preventDefault();
+      sounds.playClick();
+      this.privacyModal.show();
+    };
+
+    const bannerLink = document.getElementById("banner-privacy-link");
+    if (bannerLink) bannerLink.addEventListener("click", openPrivacy);
+
+    const footerLink = document.getElementById("footer-privacy-link");
+    if (footerLink) footerLink.addEventListener("click", openPrivacy);
   }
 
   initSmoothScroll() {
@@ -140,28 +171,12 @@ class App {
     }
   }
 
-  renderBoardTraps() {
-    const grid = document.getElementById("board-traps-grid");
-    if (!grid) return;
-
-    grid.innerHTML = boardTraps.map((trap) => `
-      <div class="trap-card">
-        <div class="trap-years">${trap.years.join(" &bull; ")}</div>
-        <h4 class="trap-q">${trap.question}</h4>
-        <p class="trap-explanation">${trap.explanation}</p>
-        <div class="trap-secret-box">
-          <strong>🎯 Examiner's Secret:</strong> ${trap.boardSecret.replace(/\n/g, '<br>')}
-        </div>
-      </div>
-    `).join('');
-  }
-
   renderReactionsBank() {
     const container = document.getElementById("reactions-bank-list");
     if (!container) return;
 
-    container.innerHTML = chemicalReactions.map((rx) => `
-      <div class="reaction-card">
+    container.innerHTML = chemicalReactions.map((rx, idx) => `
+      <div class="reaction-card" data-rx-index="${idx}">
         <div class="reaction-top">
           <span class="rx-cat-badge">${rx.category}</span>
           <span class="rx-cond">${rx.conditions}</span>
@@ -175,8 +190,21 @@ class App {
         <div class="rx-board-trap">
           ⚠️ <strong>CBSE Tip:</strong> ${rx.boardTrap}
         </div>
+        <button class="btn btn-secondary btn-sm rx-breakdown-trigger" data-rx-index="${idx}" style="margin-top: 14px; font-size: 11.5px; border-color: rgba(0, 242, 254, 0.4); color: var(--neon-cyan); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🔬</span> View Deep-Dive Breakdown
+        </button>
       </div>
     `).join('');
+
+    container.querySelectorAll(".rx-breakdown-trigger").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const idx = parseInt(e.currentTarget.getAttribute("data-rx-index"));
+        const reaction = chemicalReactions[idx];
+        if (reaction && this.breakdownModal) {
+          this.breakdownModal.show(reaction);
+        }
+      });
+    });
   }
 
   initScrollAnimations() {
@@ -191,7 +219,7 @@ class App {
         ease: "power2.out"
       });
 
-      gsap.from(".trap-card", {
+      gsap.from(".traps-carousel-wrapper", {
         scrollTrigger: {
           trigger: "#board-traps-section",
           start: "top 80%"
@@ -199,7 +227,6 @@ class App {
         opacity: 0,
         y: 25,
         duration: 0.6,
-        stagger: 0.1,
         ease: "power2.out"
       });
     } catch (e) {

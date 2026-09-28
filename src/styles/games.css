@@ -653,12 +653,103 @@
   border-color: var(--flame-ruby) !important;
 }
 
-/* Responsive tweaks for games */
+/* Responsive tweaks for games & mobile optimization */
+.crossword-grid-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
+}
+
+.crossword-grid {
+  min-width: 320px;
+  margin: 0 auto;
+}
+
 @media (max-width: 900px) {
   .crossclimb-layout, .crossword-layout {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   .sorting-bins-grid {
     grid-template-columns: 1fr !important;
   }
 }
+
+@media (max-width: 600px) {
+  .game-card {
+    padding: 18px 12px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Pinpoint mobile */
+  .pinpoint-clue {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .clue-number {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  .clue-text {
+    font-size: 13px;
+  }
+  .guess-form {
+    flex-direction: column;
+  }
+  .game-input {
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+
+  /* Crossclimb mobile */
+  .ladder-rung {
+    padding: 10px 14px;
+  }
+  .rung-prompt {
+    font-size: 12px;
+  }
+  .options-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .metal-token {
+    padding: 8px 6px;
+  }
+  .token-symbol {
+    font-size: 15px;
+  }
+  .token-name {
+    font-size: 10px;
+  }
+
+  /* Chemle / Guess Word mobile */
+  .wordle-cell {
+    width: clamp(38px, 11vw, 50px);
+    height: clamp(38px, 11vw, 50px);
+    font-size: clamp(16px, 4.5vw, 22px);
+  }
+  .virtual-keyboard {
+    max-width: 100%;
+  }
+  .kb-row {
+    gap: 3px;
+  }
+  .kb-key {
+    height: 42px;
+    min-width: clamp(24px, 8.5vw, 36px);
+    padding: 0 4px;
+    font-size: clamp(11px, 3.2vw, 13px);
+  }
+  .kb-key.wide-key {
+    min-width: clamp(42px, 13vw, 56px);
+    font-size: 10.5px;
+  }
+
+  /* Reaction Lab mobile */
+  .draggable-card {
+    padding: 8px 12px;
+    font-size: 12.5px;
+  }
+}
+
