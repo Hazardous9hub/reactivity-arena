@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hazardous9hub.github.io/alchemix-3d/sitemap.xml

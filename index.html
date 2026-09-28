@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Alchemix 3D ⚗️ Metals & Non-Metals | Class 10 CBSE Science</title>
+  
+  <!-- SEO & Search Optimization -->
+  <meta name="description" content="Alchemix 3D is a free, interactive 3D WebGL learning arcade for Class 10 CBSE Chemistry Chapter 3 (Metals & Non-Metals). Play LinkedIn-style puzzles like Pinpoint, Crossclimb, Crossword, Chemle, and ace your board exams!" />
+  <meta name="keywords" content="Class 10 science, Metals and Non-Metals, CBSE board exam, chemistry 3D, reactivity series, electrolytic refining, thermit reaction, science puzzles, NCERT chapter 3" />
+  <meta name="author" content="Pooja & Hazardous9hub" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hazardous9hub.github.io/alchemix-3d/" />
+
+  <!-- Security & Privacy Policies -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hazardous9hub.github.io/alchemix-3d/" />
+  <meta property="og:title" content="Alchemix 3D ⚗️ Metals & Non-Metals | Class 10 CBSE Science" />
+  <meta property="og:description" content="Play interactive 3D chemistry puzzles, climb the reactivity ladder, and master all past CBSE board questions!" />
+  <meta property="og:image" content="https://hazardous9hub.github.io/alchemix-3d/alchemix-qr.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Alchemix 3D ⚗️ Metals & Non-Metals" />
+  <meta name="twitter:description" content="Interactive 3D WebGL chemistry arcade and board exam prep for Class 10 students." />
+  <meta name="twitter:image" content="https://hazardous9hub.github.io/alchemix-3d/alchemix-qr.png" />
+
+  <!-- Icons & PWA Manifest -->
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="apple-touch-icon" href="./favicon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#00f2fe" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD Structured Data for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalApplication",
+    "name": "Alchemix 3D",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All modern browsers (Mobile, Tablet, Desktop)",
+    "description": "Interactive 3D WebGL Learning Arcade for CBSE Class 10 Science Chapter 3: Metals & Non-Metals.",
+    "educationalLevel": "Class 10 / High School",
+    "learningResourceType": ["Interactive Simulation", "Educational Game", "Board Exam Prep"],
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "creator": {
+      "@type": "Person",
+      "name": "Pooja & Hazardous9hub"
+    }
+  }
+  </script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <link rel="stylesheet" href="/src/styles/games.css" />
+</head>
+<body>
+
+  <!-- Mount for Header & Navigation HUD -->
+  <div id="header-mount"></div>
+
+  <!-- HERO & 3D WEBGL SHOWCASE -->
+  <section class="hero-section" id="hero-section">
+    <div class="hero-content">
+      <div class="hero-text-block">
+        <div class="hero-badge-pill">
+          <span>⚡ Gamified Learning Arena</span>
+          <span>&bull;</span>
+          <span>CBSE Class 10</span>
+        </div>
+        <h1 class="hero-title">
+          Master <span>Metals &amp; Non-Metals</span> Through 3D &amp; Play!
+        </h1>
+        <p class="hero-desc">
+          Created for students to ace board exams with zero stress. Scan the QR code, explore 3D atomic lattices and copper refining tanks, climb the reactivity ladder, and solve LinkedIn-style chemistry puzzles!
+        </p>
+
+        <div class="hero-quick-actions">
+          <a href="#games-hub-section" class="btn btn-primary">
+            🎮 Play Games &amp; Puzzles
+          </a>
+          <a href="#threed-section" class="btn btn-secondary">
+            🔬 Explore 3D Lab
+          </a>
+          <a href="./Alchemix-Class10-Metals-QRCode.png" download="Alchemix-Class10-Metals-QRCode.png" class="btn btn-secondary" title="Save QR Code Image">
+            📥 Save QR Poster
+          </a>
+        </div>
+      </div>
+
+      <!-- 3D WebGL Interactive Showcase -->
+      <div class="threed-showcase-container" id="threed-section">
+        <div class="threed-tabs">
+          <button class="threed-tab active" data-exhibit="lattice">
+            🔬 Ionic Crystal (NaCl)
+          </button>
+          <button class="threed-tab" data-exhibit="refining">
+            ⚡ Copper Refining Tank
+          </button>
+          <button class="threed-tab" data-exhibit="thermit">
+            💥 Thermit Reaction
+          </button>
+        </div>
+
+        <div id="threed-canvas-box" class="threed-viewport"></div>
+
+        <div class="threed-hint-overlay">
+          <span class="threed-hint-badge">🖱️ Drag to Rotate &bull; Pinch/Scroll to Zoom</span>
+          <span class="threed-hint-badge">WebGL 60 FPS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES & PUZZLES HUB SECTION -->
+  <section class="games-hub-section" id="games-hub-section">
+    <div class="section-header-center">
+      <span class="section-badge">ARCADE &amp; PUZZLES</span>
+      <h2 class="section-title">Play, Deduce &amp; Conquer</h2>
+      <p class="section-subtitle">LinkedIn-style games crafted around Class 10 NCERT and past board exam questions.</p>
+    </div>
+
+    <!-- Game Nav Tabs -->
+    <div class="game-nav-tabs">
+      <button class="game-tab-btn active" data-game="pinpoint">
+        <span>🎯</span> Pinpoint (5 Clues)
+      </button>
+      <button class="game-tab-btn" data-game="crossclimb">
+        <span>🧗</span> Crossclimb (Ladder)
+      </button>
+      <button class="game-tab-btn" data-game="crossword">
+        <span>🧩</span> Chemical Crossword
+      </button>
+      <button class="game-tab-btn" data-game="guessword">
+        <span>🔤</span> Guess Word (Chemle)
+      </button>
+      <button class="game-tab-btn" data-game="reactionsorter">
+        <span>🧪</span> Reaction Lab (Sort &amp; Match)
+      </button>
+    </div>
+
+    <!-- Active Game Mount Point -->
+    <div id="game-active-arena"></div>
+  </section>
+
+  <!-- BOARD EXAM HIGH-YIELD TRAPS SECTION -->
+  <section class="board-traps-section" id="board-traps-section">
+    <div class="section-header-center">
+      <span class="section-badge">CBSE MARKING SECRETS</span>
+      <h2 class="section-title">Top Board Exam Traps &amp; Solutions</h2>
+      <p class="section-subtitle">Synthesized from 7+ years of past board questions (2013&ndash;2020) and official NCERT marking criteria.</p>
+    </div>
+
+    <div id="board-traps-grid" class="traps-grid"></div>
+  </section>
+
+  <!-- CHEMICAL REACTIONS MASTER BANK -->
+  <section class="reactions-bank-section" id="reactions-section">
+    <div class="section-header-center">
+      <span class="section-badge">MASTER FORMULARY</span>
+      <h2 class="section-title">Complete Balanced Reactions Bank</h2>
+      <p class="section-subtitle">Every reaction from Chapter 3 with states, reaction conditions, and examiners' alert tips.</p>
+    </div>
+
+    <div id="reactions-bank-list" class="reactions-bank-grid"></div>
+  </section>
+
+  <!-- PRIVACY & COOKIE NOTICE BANNER (DPDP & GDPR COMPLIANT) -->
+  <div class="privacy-consent-banner" id="privacy-banner">
+    <div class="privacy-banner-inner">
+      <span class="privacy-icon">🔒</span>
+      <div class="privacy-text">
+        <strong>Privacy-First Educational Space:</strong> We do not track, collect personal data, or use advertising cookies. Your game scores, streaks, and board readiness index are stored locally on your device only.
+      </div>
+      <button class="btn btn-secondary btn-sm" id="privacy-accept-btn">Got it! 👍</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <p>⚗️ <strong>Alchemix 3D</strong> &bull; Class 10 Science Chapter 3 (Metals &amp; Non-Metals) Interactive Arcade</p>
+      <p class="mt-2 text-muted">Designed for Students, Teachers &amp; Board Aspirants &bull; Built with Three.js, Lenis, GSAP, and Web Audio API</p>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript Entrypoint -->
+  <script type="module" src="/src/app.js"></script>
+
+  <!-- Privacy Banner Script -->
+  <script>
+    (function() {
+      const banner = document.getElementById('privacy-banner');
+      const acceptBtn = document.getElementById('privacy-accept-btn');
+      if (localStorage.getItem('alchemix_privacy_accepted')) {
+        banner.style.display = 'none';
+      }
+      if (acceptBtn) {
+        acceptBtn.addEventListener('click', function() {
+          localStorage.setItem('alchemix_privacy_accepted', 'true');
+          banner.style.display = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
