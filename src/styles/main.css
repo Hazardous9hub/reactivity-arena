@@ -814,6 +814,67 @@ body::before {
   color: #d1fae5;
 }
 
+/* ==========================================================================
+   CLASSROOM DEDICATION CARD (FOR SISTER POOJA & STUDENTS)
+   ========================================================================== */
+
+.dedication-section {
+  max-width: 900px;
+  margin: 70px auto 40px;
+  padding: 0 24px;
+}
+
+.dedication-card {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(245, 158, 11, 0.08), rgba(0, 242, 254, 0.06));
+  border: 1px solid rgba(236, 72, 153, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4), 0 0 25px rgba(236, 72, 153, 0.15);
+  backdrop-filter: blur(16px);
+}
+
+.dedication-badge {
+  display: inline-block;
+  background: rgba(236, 72, 153, 0.15);
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  color: #f472b6;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.dedication-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, #fff 30%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dedication-message {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 0 auto 20px;
+  font-style: italic;
+}
+
+.dedication-signature {
+  font-size: 13px;
+  color: var(--molten-amber);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 /* Footer */
 .app-footer {
   border-top: 1px solid var(--border-glass);
@@ -821,7 +882,7 @@ body::before {
   text-align: center;
   font-size: 13px;
   color: var(--text-muted);
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 .footer-inner {
