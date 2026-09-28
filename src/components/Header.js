@@ -27,7 +27,7 @@ export class Header {
               <div class="electron-orbit orbit-2"></div>
             </div>
             <div class="logo-text">
-              <span class="logo-title">ALCHEMIX <span class="accent-3d">3D</span></span>
+              <span class="logo-title">REACTIVITY <span class="accent-3d">ARENA</span></span>
               <span class="logo-subtitle">Class 10 CBSE Science &bull; Metals &amp; Non-Metals</span>
             </div>
           </div>

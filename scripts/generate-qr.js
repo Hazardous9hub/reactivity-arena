@@ -5,18 +5,19 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
+const publicDir = path.resolve(rootDir, 'public');
 
-const targetUrl = 'https://hazardous9hub.github.io/alchemix-3d/';
+const targetUrl = 'https://hazardous9hub.github.io/reactivity-arena/';
 
 async function generate() {
-  const publicDir = path.join(__dirname, 'public');
   if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir, { recursive: true });
   }
 
-  const pngPath = path.join(publicDir, 'alchemix-qr.png');
-  const svgPath = path.join(publicDir, 'alchemix-qr.svg');
-  const rootPngPath = path.join(__dirname, 'Alchemix-Class10-Metals-QRCode.png');
+  const pngPath = path.join(publicDir, 'reactivity-arena-qr.png');
+  const svgPath = path.join(publicDir, 'reactivity-arena-qr.svg');
+  const rootPngPath = path.join(rootDir, 'Reactivity-Arena-Class10-Metals-QRCode.png');
 
   // Generate High-Res PNG (1000x1000)
   await QRCode.toFile(pngPath, targetUrl, {

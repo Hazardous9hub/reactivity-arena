@@ -1,6 +1,6 @@
 {
-  "name": "Alchemix 3D - Metals & Non-Metals",
-  "short_name": "Alchemix 3D",
+  "name": "Reactivity Arena - Metals & Non-Metals",
+  "short_name": "Reactivity Arena",
   "description": "Interactive 3D WebGL Learning Arcade for Class 10 Chemistry",
   "start_url": "./",
   "display": "standalone",

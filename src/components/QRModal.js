@@ -22,7 +22,7 @@ export class QRModal {
         <div class="qr-modal-header">
           <div class="qr-title-group">
             <span class="qr-badge">CBSE CLASS 10 &bull; CHAPTER 3</span>
-            <h3 class="qr-title">📱 Scan to Play Alchemix 3D</h3>
+            <h3 class="qr-title">📱 Scan to Play Reactivity Arena</h3>
           </div>
           <button class="qr-close-btn" id="qr-close-btn" aria-label="Close modal">&times;</button>
         </div>
@@ -107,7 +107,7 @@ export class QRModal {
   downloadQR() {
     if (!this.canvasEl) return;
     const link = document.createElement("a");
-    link.download = "Alchemix-Class10-Metals-QRCode.png";
+    link.download = "Reactivity-Arena-Class10-Metals-QRCode.png";
     link.href = this.canvasEl.toDataURL("image/png");
     link.click();
   }
@@ -124,7 +124,7 @@ export class QRModal {
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Alchemix 3D - Class 10 Science Poster</title>
+        <title>Reactivity Arena - Class 10 Science Poster</title>
         <style>
           @page { size: A4 portrait; margin: 15mm; }
           body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; color: #111; padding: 20px; }
@@ -144,8 +144,8 @@ export class QRModal {
       </head>
       <body>
         <div class="header-badge">CBSE Class 10 Science &bull; Chapter 3</div>
-        <h1>⚗️ METALS &amp; NON-METALS</h1>
-        <h2>Interactive 3D Science Arcade &amp; Board Exam Puzzles</h2>
+        <h1>⚗️ REACTIVITY ARENA</h1>
+        <h2>Metals &amp; Non-Metals 3D Arcade &amp; Board Exam Puzzles</h2>
 
         <div class="qr-box">
           <img src="${qrDataUrl}" class="qr-img" alt="QR Code" />
@@ -172,7 +172,7 @@ export class QRModal {
         </div>
 
         <div class="footer">
-          Created for Class 10 Students &bull; Alchemix 3D &bull; Compatible with all smartphone browsers
+          Created for Class 10 Students &bull; Reactivity Arena &bull; Compatible with all smartphone browsers
         </div>
       </body>
       </html>
