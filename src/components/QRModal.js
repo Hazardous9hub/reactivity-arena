@@ -1,10 +1,12 @@
 /**
  * Dynamic QR Code Generator & Classroom Poster Modal
- * Allows teachers/students to download high-res QR codes and posters.
+ * Features a permanent, unique canonical QR code that never changes or expires.
  */
 
 import QRCode from "qrcode";
 import { sounds } from "./SoundController.js";
+
+export const CANONICAL_WEBSITE_URL = "https://hazardous9hub.github.io/reactivity-arena/";
 
 function drawRoundRect(ctx, x, y, width, height, radius) {
   if (typeof ctx.roundRect === "function") {
@@ -49,7 +51,6 @@ export class QRModal {
   constructor() {
     this.modalEl = null;
     this.canvasEl = null;
-    this.currentUrl = window.location.href;
     this.createDom();
   }
 
@@ -62,7 +63,7 @@ export class QRModal {
         <div class="qr-modal-header">
           <div class="qr-title-group">
             <span class="qr-badge">CBSE CLASS 10 &bull; CHAPTER 3</span>
-            <h3 class="qr-title">📱 Scan to Play Reactivity Arena</h3>
+            <h3 class="qr-title">📱 Permanent QR Code</h3>
           </div>
           <button class="qr-close-btn" id="qr-close-btn" aria-label="Close modal">&times;</button>
         </div>
@@ -74,17 +75,24 @@ export class QRModal {
           </div>
 
           <p class="qr-instruction">
-            Scan this QR code with any smartphone camera or Google Lens to immediately launch the interactive 3D laboratory and puzzles!
+            Scan this unique QR code with any smartphone camera or Google Lens to immediately launch Reactivity Arena!
           </p>
 
-          <div class="qr-url-box">
-            <input type="text" id="qr-custom-url" class="qr-url-input" value="${this.currentUrl}" />
-            <button class="qr-update-btn" id="qr-update-btn">Update QR</button>
+          <div class="qr-url-box" style="flex-direction: column; align-items: center; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: var(--radius-sm); padding: 10px 14px; gap: 4px; margin-bottom: 20px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--neon-cyan); letter-spacing: 1px; display: flex; align-items: center; gap: 6px;">
+              <span>🔒</span> PERMANENT UNIQUE QR CODE
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 12px; color: #fff; word-break: break-all;">
+              ${CANONICAL_WEBSITE_URL}
+            </div>
+            <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">
+              Fixed canonical destination &bull; Guaranteed to remain constant &amp; active forever.
+            </div>
           </div>
 
           <div class="qr-actions">
             <button class="btn btn-secondary btn-sm" id="qr-download-btn">
-              📥 Download QR
+              📥 Download QR (PNG)
             </button>
             <button class="btn btn-primary btn-sm" id="qr-poster-btn">
               🖼️ Save QR Poster (PNG)
@@ -103,7 +111,7 @@ export class QRModal {
     this.canvasEl = wrapper.querySelector("#qr-code-canvas");
 
     this.bindEvents();
-    this.generateQR(this.currentUrl);
+    this.generateQR();
   }
 
   bindEvents() {
@@ -112,17 +120,6 @@ export class QRModal {
 
     this.modalEl.addEventListener("click", (e) => {
       if (e.target === this.modalEl) this.hide();
-    });
-
-    const updateBtn = this.modalEl.querySelector("#qr-update-btn");
-    const input = this.modalEl.querySelector("#qr-custom-url");
-    updateBtn.addEventListener("click", () => {
-      sounds.playClick();
-      const url = input.value.trim();
-      if (url) {
-        this.currentUrl = url;
-        this.generateQR(url);
-      }
     });
 
     const downloadBtn = this.modalEl.querySelector("#qr-download-btn");
@@ -144,9 +141,10 @@ export class QRModal {
     });
   }
 
-  generateQR(text) {
+  generateQR() {
     if (!this.canvasEl) return;
-    QRCode.toCanvas(this.canvasEl, text, {
+    QRCode.toCanvas(this.canvasEl, CANONICAL_WEBSITE_URL, {
+      errorCorrectionLevel: "H",
       width: 250,
       margin: 2,
       color: {
@@ -156,7 +154,11 @@ export class QRModal {
     }, (error) => {
       if (error) {
         console.error("QR generation error, falling back to standard colors", error);
-        QRCode.toCanvas(this.canvasEl, text, { width: 250, margin: 2 });
+        QRCode.toCanvas(this.canvasEl, CANONICAL_WEBSITE_URL, {
+          errorCorrectionLevel: "H",
+          width: 250,
+          margin: 2
+        });
       }
     });
   }
@@ -165,12 +167,12 @@ export class QRModal {
     if (!this.canvasEl) return;
     try {
       const link = document.createElement("a");
-      link.download = "Reactivity-Arena-Class10-Metals-QRCode.png";
+      link.download = "Reactivity-Arena-Permanent-QRCode.png";
       link.href = this.canvasEl.toDataURL("image/png");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      this.setStatusMessage("✓ QR code image downloaded!");
+      this.setStatusMessage("✓ Permanent QR code downloaded!");
     } catch (e) {
       console.error("Download QR error", e);
       this.setStatusMessage("⚠️ Failed to download QR image.");
@@ -242,7 +244,7 @@ export class QRModal {
     drawRoundRect(ctx, qrBoxX, qrBoxY, qrBoxSize, qrBoxSize, 24);
     ctx.fill();
 
-    // Draw QR code
+    // Draw QR code with high-contrast
     const qrPad = 30;
     ctx.drawImage(this.canvasEl, qrBoxX + qrPad, qrBoxY + qrPad, qrBoxSize - (qrPad * 2), qrBoxSize - (qrPad * 2));
 
@@ -251,14 +253,14 @@ export class QRModal {
     ctx.font = "bold 32px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
     ctx.fillText("📱 Scan with Camera or Google Lens to Play!", width / 2, 830);
 
-    // URL Text
+    // Permanent URL Text
     ctx.fillStyle = "#00f2fe";
     ctx.font = "22px monospace";
-    ctx.fillText(this.currentUrl, width / 2, 875);
+    ctx.fillText(CANONICAL_WEBSITE_URL, width / 2, 875);
 
     ctx.fillStyle = "#94a3b8";
     ctx.font = "20px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-    ctx.fillText("Zero Login Required • Free & Instant on Any Smartphone", width / 2, 915);
+    ctx.fillText("Permanent QR Code • Never Expires • Zero Login Required", width / 2, 915);
 
     // 7. Divider Line
     ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
@@ -380,6 +382,7 @@ export class QRModal {
 
         <div class="callout">👉 Scan with your Phone Camera or Google Lens to Play!</div>
         <p class="subtext">
+          Permanent destination: <strong>${CANONICAL_WEBSITE_URL}</strong><br>
           Zero login required. Explore 3D electron transfers, electrolytic copper refining, solve LinkedIn-style Crossclimb &amp; Pinpoint puzzles, and master all past CBSE board questions!
         </p>
 
@@ -462,7 +465,7 @@ export class QRModal {
   show() {
     if (this.modalEl) {
       this.modalEl.classList.remove("hidden");
-      this.generateQR(this.currentUrl);
+      this.generateQR();
       this.setStatusMessage("");
     }
   }
